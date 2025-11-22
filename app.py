@@ -111,9 +111,9 @@ load_url = default_load_url if use_github_defaults else None
 gen_url = default_gen_url if use_github_defaults else None
 temp_url = default_temp_url if use_github_defaults else None
 
-df_load = read_csv_from_file_or_url(uploaded_load, load_url) if (uploaded_load or load_url) else None
-df_gen = read_csv_from_file_or_url(uploaded_gen, gen_url) if (uploaded_gen or gen_url) else None
-df_temp = read_csv_from_file_or_url(uploaded_temp, temp_url) if (uploaded_temp or temp_url) else None
+# df_load = read_csv_from_file_or_url(uploaded_load, load_url) if (uploaded_load or load_url) else None
+# df_gen = read_csv_from_file_or_url(uploaded_gen, gen_url) if (uploaded_gen or gen_url) else None
+# df_temp = read_csv_from_file_or_url(uploaded_temp, temp_url) if (uploaded_temp or temp_url) else None
 
 # ---------- Page header and previews ----------
 st.title("Energy Demand Explorer — Deploy Ready")
