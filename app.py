@@ -86,14 +86,14 @@ def import_vmd_module():
     return None
 
 # ---------- Streamlit UI: Sidebar ----------
-st.sidebar.title("Controls")
-st.sidebar.markdown("**Use default GitHub datasets** or upload your own CSVs to override.")
+# st.sidebar.title("Controls")
+# st.sidebar.markdown("**Use default GitHub datasets** or upload your own CSVs to override.")
 
-uploaded_load = st.sidebar.file_uploader("Hourly Load CSV", type=["csv"])
-uploaded_gen = st.sidebar.file_uploader("Generation CSV", type=["csv"])
-uploaded_temp = st.sidebar.file_uploader("Temperature CSV", type=["csv"])
+# uploaded_load = st.sidebar.file_uploader("Hourly Load CSV", type=["csv"])
+# uploaded_gen = st.sidebar.file_uploader("Generation CSV", type=["csv"])
+# uploaded_temp = st.sidebar.file_uploader("Temperature CSV", type=["csv"])
 
-use_github_defaults = st.sidebar.checkbox("Use default GitHub datasets", value=True)
+# use_github_defaults = st.sidebar.checkbox("Use default GitHub datasets", value=True)
 
 run_eda = st.sidebar.button("Run EDA")
 run_vmd = st.sidebar.button("Run VMD")
