@@ -52,7 +52,7 @@ def parse_timestamp(df):
 
 
 # ---------- UI ----------
-st.title("⚡ Energy Demand Predictor — Minimal Version")
+st.title("⚡ Energy Demand Predictor")
 
 train_models = st.button("Train Model")
 
