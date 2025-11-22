@@ -1,5 +1,5 @@
 # -------------------------------
-# Energy Demand Predictor — Auto-Train First Time + Model Download
+# Energy Demand Predictor 
 # -------------------------------
 
 import streamlit as st
@@ -89,7 +89,7 @@ def train(df_load_local):
 
 
 # ---------- UI ----------
-st.title("⚡ Energy Demand Predictor — Auto Train on First Use")
+st.title("⚡ Energy Demand Predictor")
 
 pred_horizon = st.number_input(
     "Select Prediction Horizon (1–24 hours):",
