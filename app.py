@@ -1,13 +1,11 @@
 # -------------------------------
-# Energy Demand Explorer — Ultra Minimal Version
+# Energy Demand Predictor — Minimal Version (1–24 hours prediction)
 # -------------------------------
 
 import streamlit as st
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import importlib.util
-import os
 from urllib.parse import quote
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
@@ -18,8 +16,8 @@ st.set_page_config(page_title="Energy Demand Predictor", layout="wide")
 # ---------- GitHub Repo Settings ----------
 GITHUB_USER = "asingh1me25-cell"
 GITHUB_REPO = "Energy-Demand-Prediction"
-
 FILE_LOAD = "Hourly_Load_India_Final_Panama_Format colab.csv"
+
 
 def gh_raw(filename):
     return f"https://raw.githubusercontent.com/{GITHUB_USER}/{GITHUB_REPO}/main/{quote(filename)}"
@@ -34,7 +32,7 @@ def read_from_url(url):
         return None
 
 
-# Load ONLY load dataset
+# Load dataset from GitHub silently
 df_load = read_from_url(gh_raw(FILE_LOAD))
 
 
@@ -48,24 +46,29 @@ def parse_timestamp(df):
                 return df
             except:
                 pass
+
     df["timestamp"] = pd.to_datetime(df.iloc[:, 0])
     return df
 
 
 # ---------- UI ----------
 st.title("⚡ Energy Demand Predictor — Minimal Version")
-st.markdown("Trains a model and predicts next 24 hours. No EDA, no VMD, no previews.")
-
 
 train_models = st.button("Train Model")
-predict_button = st.button("Predict Next 24 Hours")
+
+pred_horizon = st.number_input(
+    "Select Prediction Horizon (hours):",
+    min_value=1, max_value=24, value=12, step=1
+)
+
+predict_button = st.button("Predict")
 
 
 # ---------- Model Training ----------
 def train(df_load_local):
     df = parse_timestamp(df_load_local).sort_values("timestamp")
 
-    # pick target
+    # choose target
     candidates = ["National_Demand", "National_Demand_MW", "Demand", "Total_Demand"]
     value_col = next((c for c in candidates if c in df.columns),
                      df.select_dtypes(include=[np.number]).columns[0])
@@ -116,7 +119,7 @@ if train_models:
 
 # ---------- Prediction ----------
 if predict_button:
-    st.header("Predictions (Next 24 Hours)")
+    st.header(f"Predictions (Next {pred_horizon} Hours)")
     if "model" not in st.session_state:
         st.error("Train model first.")
     else:
@@ -125,7 +128,7 @@ if predict_button:
         value_col = st.session_state["valcol"]
 
         last_ts = dfm["timestamp"].iloc[-1]
-        future_ts = [last_ts + pd.Timedelta(hours=i+1) for i in range(24)]
+        future_ts = [last_ts + pd.Timedelta(hours=i+1) for i in range(int(pred_horizon))]
 
         preds = []
         temp_df = dfm.copy()
@@ -149,12 +152,12 @@ if predict_button:
         fig, ax = plt.subplots(figsize=(10,4))
         ax.plot(out["timestamp"], out["prediction"], marker="o")
         plt.xticks(rotation=45)
-        ax.set_title("Next 24-Hour Forecast")
+        ax.set_title(f"Next {pred_horizon}-Hour Forecast")
         st.pyplot(fig)
 
         st.download_button(
-            "Download Predictions CSV",
+            f"Download {pred_horizon}h Predictions CSV",
             out.to_csv(index=False),
-            "predictions.csv",
+            f"predictions_{pred_horizon}h.csv",
             "text/csv"
         )
