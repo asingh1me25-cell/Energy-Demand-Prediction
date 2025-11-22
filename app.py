@@ -93,7 +93,7 @@ def import_vmd_module():
 # uploaded_gen = st.sidebar.file_uploader("Generation CSV", type=["csv"])
 # uploaded_temp = st.sidebar.file_uploader("Temperature CSV", type=["csv"])
 
-# use_github_defaults = st.sidebar.checkbox("Use default GitHub datasets", value=True)
+use_github_defaults = st.sidebar.checkbox("Use default GitHub datasets", value=True)
 
 run_eda = st.sidebar.button("Run EDA")
 run_vmd = st.sidebar.button("Run VMD")
